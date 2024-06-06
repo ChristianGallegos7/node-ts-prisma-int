@@ -22,7 +22,6 @@ model Usuario {
   rolId          Int
   empresaId      Int?      // Clave foránea opcional para las empresas (solo para usuarios que representan empresas)
   empresa        Empresa?  @relation(fields: [empresaId], references: [id])
-  empleos        Empleo[]  // Relación uno a muchos con Empleo (solo para usuarios que representan empresas)
 }
 
 model Empresa {
@@ -34,6 +33,7 @@ model Empresa {
   usuarios       Usuario[] // Relación uno a muchos con Usuario
   empleos        Empleo[]  // Relación uno a muchos con Empleo
 }
+
 
 model Rol {
   id             Int       @id @default(autoincrement())
@@ -50,6 +50,5 @@ model Empleo {
   fechaCreacion  DateTime  @default(now())
   empresa        Empresa   @relation(fields: [empresaId], references: [id])
   empresaId      Int
-  usuario        Usuario   @relation(fields: [usuarioId], references: [id])
-  usuarioId      Int
 }
+

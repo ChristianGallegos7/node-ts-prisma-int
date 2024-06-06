@@ -2,6 +2,7 @@ import { Router } from "express";
 import { body } from 'express-validator';
 import { obtenerEmpresas, obtenerEmpresa, crearEmpresa, actualizarEmpresa, eliminarEmpresa } from "../controllers/Empresas.controller";
 import { handleErrors } from "../middleware/validation";
+import { CrearEmpleo } from "../controllers/Empleos.controller";
 
 const router = Router();
 const telefonoEcuadorRegex = /^09[2-9]\d{7}$/;
@@ -27,7 +28,7 @@ router.delete('/:id', eliminarEmpresa);
 
 // RUTAS PARA LOS EMPLEOS YA QUE EL EMPLEO DEPENDE DE LA EMPRESA QUE CREA LA VACANTE
 
-router.post('/:empresaId/empleo')
+router.post('/:empresaId/empleo', CrearEmpleo)
 
 
 

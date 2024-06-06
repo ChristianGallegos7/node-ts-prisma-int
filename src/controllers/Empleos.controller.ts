@@ -1,25 +1,39 @@
-import { Request, Response } from "express"
-import { prisma } from "../config/db"
-export const ObtenerEmpleos = async (req: Request, res: Response) => {
-    try {
-        const empleos = await prisma.empleo.findMany()
-    } catch (error) {
-        
-    }
-}
-
-export const ObtenerEmpleo = async (req: Request, res: Response) => {
-
-}
+import { Request, Response } from "express";
+import { prisma } from "../config/db";
 
 export const CrearEmpleo = async (req: Request, res: Response) => {
+    const { empresaId } = req.params;
+    const { titulo, descripcion, salario } = req.body;
 
-}
+    try {
+        const empresa = await prisma.empresa.findUnique({
+            where: {
+                id: parseInt(empresaId)
+            }
+        });
 
-export const ActualizarEmpleo = async (req: Request, res: Response) => {
+        if (!empresa) {
+            return res.status(404).json({
+                error: "Empresa no encontrada"
+            });
+        }
 
-}
+        const empleo = await prisma.empleo.create({
+            data: {
+                titulo,
+                descripcion,
+                salario,
+                empresaId: empresa.id,
+                fechaCreacion: new Date()
+            }
+        });
 
-export const EliminarEmpleo = async (req: Request, res: Response) => {
+        res.status(201).json(empleo);
 
-}
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            error: "Error al crear el empleo"
+        });
+    }
+};
