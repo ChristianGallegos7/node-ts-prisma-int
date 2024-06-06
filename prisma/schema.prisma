@@ -1,0 +1,55 @@
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id             Int       @id @default(autoincrement())
+  nombre         String
+  apellido       String
+  edad           Int
+  correo         String    @unique
+  password       String
+  telefono       String
+  fechaCreacion  DateTime  @default(now())
+  rol            Rol       @relation(fields: [rolId], references: [id])
+  rolId          Int
+  empresaId      Int?      // Clave foránea opcional para las empresas (solo para usuarios que representan empresas)
+  empresa        Empresa?  @relation(fields: [empresaId], references: [id])
+  empleos        Empleo[]  // Relación uno a muchos con Empleo (solo para usuarios que representan empresas)
+}
+
+model Empresa {
+  id             Int       @id @default(autoincrement())
+  nombre         String
+  direccion      String
+  telefono       String
+  fechaCreacion  DateTime  @default(now())
+  usuarios       Usuario[] // Relación uno a muchos con Usuario
+  empleos        Empleo[]  // Relación uno a muchos con Empleo
+}
+
+model Rol {
+  id             Int       @id @default(autoincrement())
+  nombre         String
+  fechaCreacion  DateTime  @default(now())
+  usuarios       Usuario[] // Relación uno a muchos con Usuario
+}
+
+model Empleo {
+  id             Int       @id @default(autoincrement())
+  titulo         String
+  descripcion    String
+  salario        Float
+  fechaCreacion  DateTime  @default(now())
+  empresa        Empresa   @relation(fields: [empresaId], references: [id])
+  empresaId      Int
+  usuario        Usuario   @relation(fields: [usuarioId], references: [id])
+  usuarioId      Int
+}
