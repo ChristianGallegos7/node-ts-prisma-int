@@ -1,9 +1,9 @@
 import { Router } from "express";
 import { body, param } from 'express-validator';
-import { actualizarUsuario, crearUsuario, eliminarUsuario, obtenerUsuario, obtenerUsuarios } from "../controllers/usuarios.controller";
+import { actualizarUsuario, crearUsuario, eliminarUsuario, obtenerUsuario, obtenerUsuarios } from "../controllers/Usuarios.controller";
 import { handleErrors } from "../middleware/validation";
 
-const router = Router();
+const router: Router = Router();
 
 const telefonoEcuadorRegex = /^09[2-9]\d{7}$/;
 
